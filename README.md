@@ -68,6 +68,46 @@ model predictions are more variable than the validation data
 themselves.
 
 
+```r
+bootR2pureR1 <- function(X, y) {
+    n <- nrow(X)
+    prmt <- sample.int(n, n, replace = TRUE)
+    prmv <- sample.int(n, n, replace = TRUE)
+    Xt <- X[prmt, ]
+    Xv <- X[prmv, ]
+    yt <- y[prmt]
+    yv <- y[prmv]
+    betaHat <- bootR2:::betaHat(Xt, yt)
+    fitHat <- Xv %*% betaHat
+    SSerr <- sum((yv - fitHat)^2)
+    SStot <- sum((yv - mean(yv))^2)
+    1 - (SSerr/SStot)
+}
+bootR2pureR <- function(X, y, nBoot = 1) replicate(nBoot, bootR2pureR1(X, y))
+yBootR2pureR <- bootR2pureR(X, y, 10000)
+hist(yBootR2pureR, 50, main = "", xlab = expression(paste("Predictive ", R^2)))
+```
+
+![plot of chunk pureR](figure/pureR.png) 
+
+
+
+```r
+library(rbenchmark)
+benchmark(bootR2(X, y, nBoot = 10000), bootR2pureR(X, y, nBoot = 10000), order = "relative", 
+    replications = 10)
+```
+
+```
+##                               test replications elapsed relative user.self
+## 1      bootR2(X, y, nBoot = 10000)           10   2.228    1.000     2.174
+## 2 bootR2pureR(X, y, nBoot = 10000)           10   7.468    3.352     7.459
+##   sys.self user.child sys.child
+## 1    0.054          0         0
+## 2    0.009          0         0
+```
+
+
 Limitations
 -----------
 
