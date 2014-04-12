@@ -1,9 +1,13 @@
 library(bootR2)
+                                        ## simulate data
 set.seed(1)
-n <- 100
-p <- 10
-X <- cbind(1, matrix(rnorm(n*p), n, p))
-y <- X%*%rnorm(p+1, sd = 0.1) + rnorm(n)
+n <- 100 # number of observations (e.g. cases/sites)
+p <- 10  # number of explanatory variables
+X <- cbind(1, matrix(rnorm(n*p), n, p))  # model matrix
+y <- X%*%rnorm(p+1, sd = 0.1) + rnorm(n) # response variable
+
+                                        ## compute bootstrap sample
+                                        ## and give its summary
 yBootR2 <- bootR2(X, y, nBoot = 10000)
 summary(yBootR2)
 

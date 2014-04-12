@@ -63,3 +63,6 @@ Limitations
 
 1. currently only least-squares fits are permitted 
 2. currently only sum-of-squares-based R-squared statistics are computed
+3. currently only nonparametric bootstraps are allowed
+
+Interested in helping remove these limitations?
