@@ -48,3 +48,10 @@ Example
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 -0.54930  0.02755  0.11130  0.09918  0.18770  0.45510 
 ```
+
+
+Limitations
+-----------
+
+1. currently only least-squares fits are permitted 
+2. currently only sum-of-squares-based R-squared statistics are computed
