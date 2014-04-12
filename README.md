@@ -57,7 +57,7 @@ summary(yBootR2)
 ```
 
 ```r
-hist(yBootR2, 50)
+hist(yBootR2, 50, main = "", xlab = expression(paste("Predictive ", R^2)))
 ```
 
 ![plot of chunk README_example](figure/README_example.png) 
