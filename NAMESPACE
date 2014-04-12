@@ -1,0 +1,4 @@
+useDynLib(bootR2)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
+export(bootR2)
