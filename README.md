@@ -1,7 +1,37 @@
 bootR2
 ======
 
-`R` package for computing fast `Rcpp`-based predictive R-squares, via the nonparametric bootstrap.  Heavy use is made of `RcppEigen`.
+`R` package for computing fast `Rcpp`-based predictive R-squares, via
+the nonparametric bootstrap.  Heavy use is made of `RcppEigen`.
+
+Predictive R-squared statistics use two different samples, one for
+training a linear model and one for validating it.  The `bootR2`
+package draws two nonparametric bootstrap samples to be used as
+training and validation data for calculating a predictive R-squared.
+Such a bootstrap distribution provides a better assessment of the
+proportion of variation that the fitted model could explain in other
+samples from the population.  NOTE: the adjusted R-squared does *not*
+provide this assessment.
+
+
+Why?
+----
+
+The technometrics literature has argued for quite a while that the
+adjusted R-squared statistic is biased as an estimate of the ability
+of a fitted model to explain variation in the population.  However,
+constructing an analytical bias correction is: 
+
+1. challenging
+2. has resulted in a large number of proposals, none of which dominate the
+others in all settings
+3. do not readily yield estimates of uncertainty in the point estimates
+
+The nonparametric bootstrap is a good alternative, but obviously
+slower.  By using `RcppEigen`, we are able to compute fast approximate
+sampling distributions of out-of-sample predictive R-squared
+statistics.
+
 
 Example
 -------

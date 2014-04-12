@@ -1,8 +1,13 @@
 library(bootR2)
+set.seed(1)
 n <- 100
 p <- 10
-X <- matrix(rnorm(n*p), n, p)
-y <- X%*%rnorm(p, sd = 0.15) + rnorm(n)
+X <- cbind(1, matrix(rnorm(n*p), n, p))
+y <- X%*%rnorm(p+1, sd = 0.1) + rnorm(n)
+yBootR2 <- bootR2(X, y, nBoot = 10000)
+summary(yBootR2)
+
+
 bR2 <- bootR2samp(cbind(1, X[,4,drop=FALSE]), y, 10000)
 bprR2 <- bootR2pred(cbind(1, X[,4,drop=FALSE]), y, 10000)
 par(mfrow = c(3, 1))
