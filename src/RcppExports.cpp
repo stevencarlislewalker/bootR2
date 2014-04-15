@@ -4,55 +4,6 @@
 
 #include "bootR2.h"
 
-// mult
-NumericVector mult(NumericVector a, NumericVector b);
-RcppExport SEXP bootR2_mult(SEXP aSEXP, SEXP bSEXP) {
-    BEGIN_RCPP
-	SEXP __sexp_result;
-    {
-	Rcpp::RNGScope __rngScope;
-	Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
-	Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
-	NumericVector __result = mult(a, b);
-	PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-    END_RCPP
-}
-
-
-// trans
-MatrixXd trans(MatrixXd X);
-RcppExport SEXP bootR2_trans(SEXP XX) {
-    BEGIN_RCPP
-	SEXP __sexp_result;
-    { 
-	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
-	MatrixXd __result = trans(X);
-	PROTECT(__sexp_result = wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-    END_RCPP
-}
-
-
-// crossProd
-MatrixXd crossProd(MatrixXd X);
-RcppExport SEXP bootR2_crossProd(SEXP XX) {
-    BEGIN_RCPP
-	SEXP __sexp_result;
-    {
-	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
-	MatrixXd __result = crossProd(X);
-	PROTECT(__sexp_result = wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-    END_RCPP
-}
-
 // betahat
 VectorXd betaHat(MatrixXd X, VectorXd y);
 RcppExport SEXP bootR2_betaHat(SEXP XX, SEXP yy) {
@@ -137,21 +88,6 @@ RcppExport SEXP bootR2_bootPerm(SEXP nn) {
     return __sexp_result;
     END_RCPP
 }
-
-IntegerVector order_(NumericVector x);
-RcppExport SEXP bootR2_order_(SEXP xx) {
-    BEGIN_RCPP
-	SEXP __sexp_result;
-    {
-	Rcpp::traits::input_parameter< NumericVector >::type x(xx);
-	IntegerVector __result = order_(x);
-	PROTECT(__sexp_result = wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-    END_RCPP
-}
-
 
 
 // shuffleMatrix

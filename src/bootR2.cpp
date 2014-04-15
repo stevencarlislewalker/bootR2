@@ -1,30 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
+
 #include "bootR2.h"
-
-// [[Rcpp::export]]
-NumericVector mult(NumericVector a, NumericVector b) {
-
-    int n = a.size();
-    NumericVector out(n);
-    for(int i = 0; i < n; ++i) {
-	out[i] = a[i] * b[i];
-    }
-    
-    return out ;
-}
-
-
-// [[Rcpp::export]]
-MatrixXd trans(MatrixXd X) {
-    const MatrixXd Xt(X.transpose());
-    return Xt;
-}
-
-// [[Rcpp::export]]
-MatrixXd crossProd(MatrixXd X) {
-    const MatrixXd XtX(X.transpose() * X);
-    return XtX;
-}
 
 
 double ave(VectorXd y) {
@@ -44,8 +20,6 @@ VectorXd dev(VectorXd y) {
     }
     return devs;
 }
-
-
 
 
 // [[Rcpp::export]]
@@ -84,18 +58,6 @@ double R2pred(MatrixXd Xt, VectorXd yt, MatrixXd Xv, VectorXd yv) {
     // Rcpp::Rcout << SSerr << "\n\n" << SStot << std::endl;
     const double out(1 - (SSerr/SStot));
     return out;
-}
-
-
-
-
-// [[Rcpp::export]]
-IntegerVector order_(NumericVector x) {
-    if (is_true(any(duplicated(x)))) {
-	Rf_warning("There are duplicates in 'x'; order not guaranteed to match that of R's base::order");
-    }
-    NumericVector sorted = clone(x).sort();
-    return match(sorted, x);
 }
 
 

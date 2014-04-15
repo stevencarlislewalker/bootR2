@@ -63,3 +63,32 @@ R2pred(X, y, Xv, yv)
 hist(bootR2(X, y, 10000))
 hist(bootR2pred(X, y, 10000))
 
+
+bootR2pureR1 <- function(X, y) {
+    n <- nrow(X)
+    prmt <- sample.int(n, n, replace = TRUE)
+    prmv <- sample.int(n, n, replace = TRUE)
+    Xt <- X[prmt, ]
+    Xv <- X[prmv, ]
+    yt <- y[prmt]
+    yv <- y[prmv]
+    betaHat <- bootR2:::betaHat(Xt, yt)
+    fitHat <- Xv %*% betaHat
+    SSerr <- sum((yv - fitHat)^2)
+    SStot <- sum((yv - mean(yv))^2)
+    1 - (SSerr/SStot)
+}
+replicate(10000, bootR2pureR1(X, y))
+
+library(vegan)
+data(dune)
+data(dune.env)
+dune.Manure <- rda(dune ~ Manure, dune.env)
+dune.mlm <- as.mlm(dune.Manure)
+model.response(model.frame(dune.mlm))
+model.matrix(dune.mlm)
+
+model.response(model.frame(dune.Manure))
+
+model.frame(formula(dune.Manure$call), )
+eval(dune.Manure$call$data)
