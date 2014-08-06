@@ -1,4 +1,5 @@
 library(bootR2)
+
                                         ## simulate data
 set.seed(1)
 n <- 100 # number of observations (e.g. cases/sites)

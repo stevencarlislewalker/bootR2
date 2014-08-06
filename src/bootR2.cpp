@@ -34,7 +34,7 @@ VectorXd betaHat(MatrixXd X, VectorXd y) {
 
 // [[Rcpp::export]]
 double R2(MatrixXd X, VectorXd y) {
-    const double n(X.rows());  // FIXME:  not needed?
+    // const double n(X.rows());  // FIXME:  not needed?
     const VectorXd coefHat(betaHat(X, y));
     const VectorXd fitted(X * coefHat);
     const VectorXd resid(y - fitted);
@@ -131,12 +131,12 @@ MatrixXd bootCoef(const MatrixXd X, const VectorXd y, int nBoot){
 VectorXd bootR2(const MatrixXd X, const VectorXd y, int nBoot){
     RNGScope scope;
     const int n(X.rows());
-    const int p(X.cols());
+    // const int p(X.cols());
     VectorXd R2s(nBoot);
     MatrixXd Xi(X);
     VectorXd yi(y);
     IntegerVector prm(n);
-    double R2i(R2(Xi, yi));
+    // double R2i(R2(Xi, yi));
     for(int i = 0; i < nBoot; ++i) {
 	prm = bootPerm(n);
 	Xi = shuffleMatrix(X, prm);
@@ -152,7 +152,7 @@ VectorXd bootR2(const MatrixXd X, const VectorXd y, int nBoot){
 VectorXd bootR2pred(const MatrixXd X, const VectorXd y, int nBoot){
     RNGScope scope;
     const int n(X.rows());
-    const int p(X.cols());
+    // const int p(X.cols());
     VectorXd R2s(nBoot);
     MatrixXd Xti(X);
     VectorXd yti(y);
@@ -160,7 +160,7 @@ VectorXd bootR2pred(const MatrixXd X, const VectorXd y, int nBoot){
     VectorXd yvi(y);
     IntegerVector prmt(n);
     IntegerVector prmv(n);
-    double R2i(R2pred(Xti, yti, Xvi, yvi));
+    // double R2i(R2pred(Xti, yti, Xvi, yvi));
     for(int i = 0; i < nBoot; ++i) {
 	prmt = bootPerm(n);
 	prmv = bootPerm(n);

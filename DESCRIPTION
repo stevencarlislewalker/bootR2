@@ -7,7 +7,6 @@ Author: Steve Walker
 Maintainer: Steve Walker <steve.walker@utoronto.ca>
 Description: Predictive R-squares via the bootstrap
 License: GPL-2
-Imports:
-    Rcpp (>= 0.11.1),
-    RcppEigen
+Depends:
+    Rcpp
 LinkingTo: Rcpp, RcppEigen
