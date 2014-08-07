@@ -20,6 +20,22 @@ RcppExport SEXP bootR2_betaHat(SEXP XX, SEXP yy) {
     END_RCPP
 }
 
+// // betaHatMat
+// MatrixXd betaHatMat(MatrixXd X, MatrixXd Y);
+// RcppExport SEXP bootR2_betaHatMat(SEXP XX, SEXP YY) {
+//     BEGIN_RCPP
+// 	SEXP __sexp_result;
+//     {
+// 	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
+// 	const Map<MatrixXd> Y(as<Map<MatrixXd> >(YY));
+// 	MatrixXd __result = betaHatMat(X, Y);
+// 	PROTECT(__sexp_result = wrap(__result));
+//     }
+//     UNPROTECT(1);
+//     return __sexp_result;
+//     END_RCPP
+// }
+
 
 // R2
 double R2(MatrixXd X, VectorXd y);

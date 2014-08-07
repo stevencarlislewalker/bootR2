@@ -12,12 +12,17 @@
 ##' predictive R-squared statistic
 ##'
 ##' @param X model matrix
-##' @param y response vector
+##' @param y response vector (or matrix)
 ##' @rdname regressionStatistics
 ##' @aliases betaHat
 ##' @export
 betaHat <- function(X, y) {
-    .Call('bootR2_betaHat', PACKAGE = 'bootR2', X, y)
+    .Call('bootR2_betaHat'   , PACKAGE = 'bootR2', X, y)
+    ## if(is.matrix(y)) {
+    ##     .Call('bootR2_betaHatMat', PACKAGE = 'bootR2', X, y)
+    ## } else {
+    ##     .Call('bootR2_betaHat'   , PACKAGE = 'bootR2', X, y)
+    ## }
 }
 
 ##' @rdname regressionStatistics

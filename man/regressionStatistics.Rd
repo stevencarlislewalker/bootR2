@@ -14,7 +14,7 @@ R2pred(Xt, yt, Xv, yv)
 \arguments{
 \item{X}{model matrix}
 
-\item{y}{response vector}
+\item{y}{response vector (or matrix)}
 
 \item{Xt}{training model matrix}
 

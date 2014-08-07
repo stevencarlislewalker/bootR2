@@ -21,15 +21,27 @@ VectorXd dev(VectorXd y) {
     return devs;
 }
 
+LLT<MatrixXd> CholX(MatrixXd X) {
+    const int p(X.cols());
+    const MatrixXd XtX(MatrixXd(p, p).setZero().selfadjointView<Lower>().rankUpdate(X.adjoint()));
+    LLT<MatrixXd> out(XtX.selfadjointView<Lower>());
+    return out;
+}
 
 // [[Rcpp::export]]
 VectorXd betaHat(MatrixXd X, VectorXd y) {
-    const int p(X.cols());
-    const MatrixXd XtX(MatrixXd(p, p).setZero().selfadjointView<Lower>().rankUpdate(X.adjoint()));
-    LLT<MatrixXd> Ch(XtX.selfadjointView<Lower>());
+    LLT<MatrixXd> Ch(CholX(X));
     const VectorXd betaOut = Ch.solve(X.adjoint() * y);
     return betaOut;
 }
+
+// [[Rcpp::export]]
+// MatrixXd betaHatMat(MatrixXd X, MatrixXd Y) {
+//     Rcpp::Rcout << "here we are" << std::endl;
+//     LLT<MatrixXd> Ch(CholX(X));
+//     const MatrixXd betaOut = Ch.solve(X.adjoint() * Y);
+//     return betaOut;
+// }
 
 
 // [[Rcpp::export]]
@@ -45,6 +57,20 @@ double R2(MatrixXd X, VectorXd y) {
     const double out(1 - (SSerr/SStot));
     return out;
 }
+
+// // [[Rcpp::export]]
+// double R2Mat(MatrixXd X, MatrixXd Y) {
+//     // const double n(X.rows());  // FIXME:  not needed?
+//     const MatrixXd coefHat(betaHatMat(X, Y));
+//     const MatrixXd fitted(X * coefHat);
+//     const MatrixXd resid(Y - fitted);
+//     const VectorXd residNull(dev(y));
+//     const double SSerr(pow(resid.norm(), 2));
+//     const double SStot(pow(residNull.norm(), 2));
+//     // Rcpp::Rcout << SSerr << "\n\n" << SStot << std::endl;
+//     const double out(1 - (SSerr/SStot));
+//     return out;
+// }
 
 
 // [[Rcpp::export]]

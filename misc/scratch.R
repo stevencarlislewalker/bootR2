@@ -81,9 +81,28 @@ bootR2pureR1 <- function(X, y) {
 }
 replicate(10000, bootR2pureR1(X, y))
 
+
+library(bootR2)
 library(vegan)
+library(Matrix)
 data(dune)
 data(dune.env)
+
+colnames(dune.env)
+Y <- decostand(as.matrix(dune), method = "hellinger")
+y <- as.vector(Y)
+M <- model.matrix(~ Manure, dune.env)
+X <- as.matrix(.bdiag(rep(list(M), ncol(dune))))
+
+betaHat(M, Y)
+
+
+bt <- bootR2(X, y, 1000)
+summary(bt)
+hist(bt)
+mean(bt < 0, na.rm = TRUE)
+hist(bt[bt > -3])
+
 dune.Manure <- rda(dune ~ Manure, dune.env)
 dune.mlm <- as.mlm(dune.Manure)
 model.response(model.frame(dune.mlm))
@@ -93,3 +112,4 @@ model.response(model.frame(dune.Manure))
 
 model.frame(formula(dune.Manure$call), )
 eval(dune.Manure$call$data)
+
