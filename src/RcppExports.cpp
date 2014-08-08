@@ -5,14 +5,14 @@
 #include "bootR2.h"
 
 // betahat
-VectorXd betaHat(MatrixXd X, VectorXd y);
+MatrixXd betaHat(MatrixXd X, MatrixXd y);
 RcppExport SEXP bootR2_betaHat(SEXP XX, SEXP yy) {
     BEGIN_RCPP
 	SEXP __sexp_result;
     {
 	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
-	const Map<VectorXd> y(as<Map<VectorXd> >(yy));
-	VectorXd __result = betaHat(X, y);
+	const Map<MatrixXd> y(as<Map<MatrixXd> >(yy));
+	MatrixXd __result = betaHat(X, y);
 	PROTECT(__sexp_result = wrap(__result));
     }
     UNPROTECT(1);
@@ -38,13 +38,13 @@ RcppExport SEXP bootR2_betaHat(SEXP XX, SEXP yy) {
 
 
 // R2
-double R2(MatrixXd X, VectorXd y);
+double R2(MatrixXd X, MatrixXd y);
 RcppExport SEXP bootR2_R2(SEXP XX, SEXP yy) {
     BEGIN_RCPP
 	SEXP __sexp_result;
     {
 	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
-	const Map<VectorXd> y(as<Map<VectorXd> >(yy));
+	const Map<MatrixXd> y(as<Map<MatrixXd> >(yy));
 	double __result = R2(X, y);
 	PROTECT(__sexp_result = wrap(__result));
     }
@@ -55,15 +55,15 @@ RcppExport SEXP bootR2_R2(SEXP XX, SEXP yy) {
 
 
 // R2pred
-double R2pred(MatrixXd Xt, VectorXd yt, MatrixXd Xv, VectorXd yv);
+double R2pred(MatrixXd Xt, MatrixXd yt, MatrixXd Xv, MatrixXd yv);
 RcppExport SEXP bootR2_R2pred(SEXP XXt, SEXP yyt, SEXP XXv, SEXP yyv) {
     BEGIN_RCPP
 	SEXP __sexp_result;
     {
 	const Map<MatrixXd> Xt(as<Map<MatrixXd> >(XXt));
-	const Map<VectorXd> yt(as<Map<VectorXd> >(yyt));
+	const Map<MatrixXd> yt(as<Map<MatrixXd> >(yyt));
 	const Map<MatrixXd> Xv(as<Map<MatrixXd> >(XXv));
-	const Map<VectorXd> yv(as<Map<VectorXd> >(yyv));
+	const Map<MatrixXd> yv(as<Map<MatrixXd> >(yyv));
 	double __result = R2pred(Xt, yt, Xv, yv);
 	PROTECT(__sexp_result = wrap(__result));
     }
@@ -140,33 +140,33 @@ RcppExport SEXP bootR2_shuffleVector(SEXP yy, SEXP prm_) {
 }
 
 
-// bootCoef
-MatrixXd bootCoef(const MatrixXd X, const VectorXd y, const int nBoot);
-RcppExport SEXP bootR2_bootCoef(SEXP XX, SEXP yy, SEXP nnBoot) {
-    BEGIN_RCPP
-	SEXP __sexp_result;
-    {
-	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
-	const Map<VectorXd> y(as<Map<VectorXd> >(yy));
-	Rcpp::traits::input_parameter< int >::type nBoot(nnBoot);
-	MatrixXd __result = bootCoef(X, y, nBoot);
-	PROTECT(__sexp_result = wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-    END_RCPP
-}
+// // bootCoef
+// MatrixXd bootCoef(const MatrixXd X, const MatrixXd y, const int nBoot);
+// RcppExport SEXP bootR2_bootCoef(SEXP XX, SEXP yy, SEXP nnBoot) {
+//     BEGIN_RCPP
+// 	SEXP __sexp_result;
+//     {
+// 	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
+// 	const Map<MatrixXd> y(as<Map<MatrixXd> >(yy));
+// 	Rcpp::traits::input_parameter< int >::type nBoot(nnBoot);
+// 	MatrixXd __result = bootCoef(X, y, nBoot);
+// 	PROTECT(__sexp_result = wrap(__result));
+//     }
+//     UNPROTECT(1);
+//     return __sexp_result;
+//     END_RCPP
+// }
 
 
 
 // bootR2
-VectorXd bootR2(const MatrixXd X, const VectorXd y, const int nBoot);
+VectorXd bootR2(const MatrixXd X, const MatrixXd y, const int nBoot);
 RcppExport SEXP bootR2_bootR2(SEXP XX, SEXP yy, SEXP nnBoot) {
     BEGIN_RCPP
 	SEXP __sexp_result;
     {
 	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
-	const Map<VectorXd> y(as<Map<VectorXd> >(yy));
+	const Map<MatrixXd> y(as<Map<MatrixXd> >(yy));
 	Rcpp::traits::input_parameter< int >::type nBoot(nnBoot);
 	VectorXd __result = bootR2(X, y, nBoot);
 	PROTECT(__sexp_result = wrap(__result));
@@ -180,13 +180,13 @@ RcppExport SEXP bootR2_bootR2(SEXP XX, SEXP yy, SEXP nnBoot) {
 
 
 // bootR2pred
-VectorXd bootR2pred(const MatrixXd X, const VectorXd y, const int nBoot);
+VectorXd bootR2pred(const MatrixXd X, const MatrixXd y, const int nBoot);
 RcppExport SEXP bootR2_bootR2pred(SEXP XX, SEXP yy, SEXP nnBoot) {
     BEGIN_RCPP
 	SEXP __sexp_result;
     {
 	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
-	const Map<VectorXd> y(as<Map<VectorXd> >(yy));
+	const Map<MatrixXd> y(as<Map<MatrixXd> >(yy));
 	Rcpp::traits::input_parameter< int >::type nBoot(nnBoot);
 	VectorXd __result = bootR2pred(X, y, nBoot);
 	PROTECT(__sexp_result = wrap(__result));
@@ -195,6 +195,3 @@ RcppExport SEXP bootR2_bootR2pred(SEXP XX, SEXP yy, SEXP nnBoot) {
     return __sexp_result;
     END_RCPP
 }
-
-
-

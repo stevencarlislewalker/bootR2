@@ -79,15 +79,15 @@ shuffleVector <- function(y, prm) {
 }
 
 
-##' Bootstraped linear model coefficient
-##'
-##' @param X model matrix
-##' @param y response vector
-##' @param nBoot number of bootstrap samples
-##' @export
-bootCoef <- function(X, y, nBoot) {
-    .Call('bootR2_bootCoef', PACKAGE = 'bootR2', X, y, nBoot)
-}
+## Bootstraped linear model coefficient
+##
+## @param X model matrix
+## @param y response vector
+## @param nBoot number of bootstrap samples
+## @export
+## bootCoef <- function(X, y, nBoot) {
+##     .Call('bootR2_bootCoef', PACKAGE = 'bootR2', X, y, nBoot)
+## }
 
 
 ## dev <- function(y) {

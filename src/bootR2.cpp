@@ -3,20 +3,24 @@
 #include "bootR2.h"
 
 
-double ave(VectorXd y) {
-    const double n(y.size());    
+double ave(MatrixXd y) {
+    const double n(y.rows());
+    const double m(y.cols());
     const double ySum(y.sum());
-    const double yAve(ySum/n);
+    const double yAve(ySum/(n*m));
     return(yAve);
 }
 
 
-VectorXd dev(VectorXd y) {
-    const int n(y.size());    
+MatrixXd dev(MatrixXd y) {
+    const int n(y.rows());
+    const int m(y.cols());
     const double yAve(ave(y));
-    VectorXd devs(y);
+    MatrixXd devs(y);
     for(int i = 0; i < n; ++i) {
-	devs[i] = y[i] - yAve;
+	for(int j = 0; j < m; ++j) {
+	    devs(i, j) = y(i, j) - yAve;
+	}
     }
     return devs;
 }
@@ -29,9 +33,9 @@ LLT<MatrixXd> CholX(MatrixXd X) {
 }
 
 // [[Rcpp::export]]
-VectorXd betaHat(MatrixXd X, VectorXd y) {
+MatrixXd betaHat(MatrixXd X, MatrixXd y) {
     LLT<MatrixXd> Ch(CholX(X));
-    const VectorXd betaOut = Ch.solve(X.adjoint() * y);
+    const MatrixXd betaOut = Ch.solve(X.adjoint() * y);
     return betaOut;
 }
 
@@ -45,12 +49,12 @@ VectorXd betaHat(MatrixXd X, VectorXd y) {
 
 
 // [[Rcpp::export]]
-double R2(MatrixXd X, VectorXd y) {
+double R2(MatrixXd X, MatrixXd y) {
     // const double n(X.rows());  // FIXME:  not needed?
-    const VectorXd coefHat(betaHat(X, y));
-    const VectorXd fitted(X * coefHat);
-    const VectorXd resid(y - fitted);
-    const VectorXd residNull(dev(y));
+    const MatrixXd coefHat(betaHat(X, y));
+    const MatrixXd fitted(X * coefHat);
+    const MatrixXd resid(y - fitted);
+    const MatrixXd residNull(dev(y));
     const double SSerr(pow(resid.norm(), 2));
     const double SStot(pow(residNull.norm(), 2));
     // Rcpp::Rcout << SSerr << "\n\n" << SStot << std::endl;
@@ -74,11 +78,11 @@ double R2(MatrixXd X, VectorXd y) {
 
 
 // [[Rcpp::export]]
-double R2pred(MatrixXd Xt, VectorXd yt, MatrixXd Xv, VectorXd yv) {
-    const VectorXd coefHat(betaHat(Xt, yt));
-    const VectorXd fitted(Xv * coefHat);
-    const VectorXd resid(yv - fitted);
-    const VectorXd residNull(dev(yv));
+double R2pred(MatrixXd Xt, MatrixXd yt, MatrixXd Xv, MatrixXd yv) {
+    const MatrixXd coefHat(betaHat(Xt, yt));
+    const MatrixXd fitted(Xv * coefHat);
+    const MatrixXd resid(yv - fitted);
+    const MatrixXd residNull(dev(yv));
     const double SSerr(pow(resid.norm(), 2));
     const double SStot(pow(residNull.norm(), 2));
     // Rcpp::Rcout << SSerr << "\n\n" << SStot << std::endl;
@@ -130,43 +134,44 @@ NumericVector rUnif(const int n) {
 }
 
 
-// [[Rcpp::export]]
-MatrixXd bootCoef(const MatrixXd X, const VectorXd y, int nBoot){
-    RNGScope scope;
-    const int n(X.rows());
-    const int p(X.cols());
-    MatrixXd bootBeta(nBoot, p);
-    MatrixXd Xi(X);
-    VectorXd yi(y);
-    IntegerVector prm(n);
-    VectorXd betaHati(p);
-    for(int i = 0; i < nBoot; ++i) {
-	prm = bootPerm(n);
-	Xi = shuffleMatrix(X, prm);
-	yi = shuffleVector(y, prm);
-	betaHati = betaHat(Xi, yi);
-	for(int j = 0; j < p; ++j) {
-	    bootBeta(i, j) = betaHati[j];
-	}
-    }
-    return bootBeta;
-}
+// // [[Rcpp::export]]
+// MatrixXd bootCoef(const MatrixXd X, const MatrixXd y, int nBoot){
+//     RNGScope scope;
+//     const int n(X.rows());
+//     const int p(X.cols());
+//     const int m(y.cols());
+//     MatrixXd bootBeta(nBoot, p);
+//     MatrixXd Xi(X);
+//     MatrixXd yi(y);
+//     IntegerVector prm(n);
+//     MatrixXd betaHati(p, m);
+//     for(int i = 0; i < nBoot; ++i) {
+// 	prm = bootPerm(n);
+// 	Xi = shuffleMatrix(X, prm);
+// 	yi = shuffleVector(y, prm);
+// 	betaHati = betaHat(Xi, yi);
+// 	for(int j = 0; j < p; ++j) {
+// 	    bootBeta(i, j) = betaHati[j];
+// 	}
+//     }
+//     return bootBeta;
+// }
 
 
 // [[Rcpp::export]]
-VectorXd bootR2(const MatrixXd X, const VectorXd y, int nBoot){
+VectorXd bootR2(const MatrixXd X, const MatrixXd y, int nBoot){
     RNGScope scope;
     const int n(X.rows());
     // const int p(X.cols());
     VectorXd R2s(nBoot);
     MatrixXd Xi(X);
-    VectorXd yi(y);
+    MatrixXd yi(y);
     IntegerVector prm(n);
     // double R2i(R2(Xi, yi));
     for(int i = 0; i < nBoot; ++i) {
 	prm = bootPerm(n);
 	Xi = shuffleMatrix(X, prm);
-	yi = shuffleVector(y, prm);
+	yi = shuffleMatrix(y, prm);
 	R2s(i) = R2(Xi, yi);
     }
     return R2s;
@@ -175,15 +180,15 @@ VectorXd bootR2(const MatrixXd X, const VectorXd y, int nBoot){
 
 
 // [[Rcpp::export]]
-VectorXd bootR2pred(const MatrixXd X, const VectorXd y, int nBoot){
+VectorXd bootR2pred(const MatrixXd X, const MatrixXd y, int nBoot){
     RNGScope scope;
     const int n(X.rows());
     // const int p(X.cols());
     VectorXd R2s(nBoot);
     MatrixXd Xti(X);
-    VectorXd yti(y);
+    MatrixXd yti(y);
     MatrixXd Xvi(X);
-    VectorXd yvi(y);
+    MatrixXd yvi(y);
     IntegerVector prmt(n);
     IntegerVector prmv(n);
     // double R2i(R2pred(Xti, yti, Xvi, yvi));
@@ -191,9 +196,9 @@ VectorXd bootR2pred(const MatrixXd X, const VectorXd y, int nBoot){
 	prmt = bootPerm(n);
 	prmv = bootPerm(n);
 	Xti = shuffleMatrix(X, prmt);
-	yti = shuffleVector(y, prmt);
+	yti = shuffleMatrix(y, prmt);
 	Xvi = shuffleMatrix(X, prmv);
-	yvi = shuffleVector(y, prmv);
+	yvi = shuffleMatrix(y, prmv);
 	R2s(i) = R2pred(Xti, yti, Xvi, yvi);
     }
     return R2s;

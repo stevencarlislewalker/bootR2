@@ -94,8 +94,9 @@ y <- as.vector(Y)
 M <- model.matrix(~ Manure, dune.env)
 X <- as.matrix(.bdiag(rep(list(M), ncol(dune))))
 
-betaHat(M, Y)
-
+plot(betaHat(M, Y), betaHat(X, y))
+bt <- bootR2(M, Y, 1000)
+mean(bt, trim = 0.1)
 
 bt <- bootR2(X, y, 1000)
 summary(bt)
