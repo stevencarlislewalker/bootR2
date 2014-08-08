@@ -1,3 +1,10 @@
+##' SUMMARY:  the matrixY branch is slower for vector-valued Y, but allows
+##' matrix-valued Y, which master does not do currently
+##'
+##' 
+##' 
+
+
 library(bootR2)
 ## simulate data
 set.seed(1)
