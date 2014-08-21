@@ -112,3 +112,24 @@ bootR2samp <- function(X, y, nBoot) {
     .Call('bootR2_bootR2', PACKAGE = 'bootR2', X, y, nBoot)
 }
 
+##' Predictive R-square simulations
+##'
+##' Calculate estimated and sample R-square statistics for each model
+##' with zero to \code{pNoi} predictors that are unrelated to the
+##' response
+##'
+##' @param Xsamp model matrix in a sample (last \code{pNoi} columns
+##' should be unrelated to the model response)
+##' @param Xpop model matrix in a population (last \code{pNoi} columns
+##' should be unrelated to the model response)
+##' @param Ysamp model response in a sample
+##' @param Ypop model response in a population
+##' @param pNoi number of predictors that are not related to the response
+##' @param pSig number of predictors that are related to the response
+##' @return Two column matrix with estimated R-squares in the first
+##' column and sample R-squares in the second
+##' @export
+simExperiment <- function(Xsamp, Xpop, Ysamp, Ypop, pNoi, pSig) {
+    .Call('bootR2_simExperiment', PACKAGE = 'bootR2',
+          Xsamp, Xpop, Ysamp, Ypop, pNoi, pSig)
+}

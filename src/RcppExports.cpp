@@ -195,3 +195,29 @@ RcppExport SEXP bootR2_bootR2pred(SEXP XX, SEXP yy, SEXP nnBoot) {
     return __sexp_result;
     END_RCPP
 }
+
+
+// simExperiment
+MatrixXd simExperiment(const MatrixXd Xsamp, const MatrixXd Xpop,
+		       const MatrixXd Ysamp, const MatrixXd Ypop,
+		       const int pNoi, const int pSig);
+RcppExport SEXP bootR2_simExperiment(SEXP XXsamp, SEXP XXpop, 
+				     SEXP YYsamp, SEXP YYpop,
+				     SEXP ppNoi, SEXP ppSig) {
+    BEGIN_RCPP
+	SEXP __sexp_result;
+    {
+	const Map<MatrixXd> Xsamp(as<Map<MatrixXd> >(XXsamp));
+	const Map<MatrixXd> Xpop(as<Map<MatrixXd> >(XXpop));
+	const Map<MatrixXd> Ysamp(as<Map<MatrixXd> >(YYsamp));
+	const Map<MatrixXd> Ypop(as<Map<MatrixXd> >(YYpop));    
+	Rcpp::traits::input_parameter< int >::type pNoi(ppNoi);
+	Rcpp::traits::input_parameter< int >::type pSig(ppSig);
+	MatrixXd __result = simExperiment(Xsamp, Xpop, Ysamp, Ypop,
+					  pNoi, pSig);
+	PROTECT(__sexp_result = wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+    END_RCPP
+}

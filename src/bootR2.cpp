@@ -204,3 +204,22 @@ VectorXd bootR2pred(const MatrixXd X, const MatrixXd y, int nBoot){
     return R2s;
 }
 
+// [[Rcpp::export]]
+MatrixXd simExperiment(const MatrixXd Xsamp, const MatrixXd Xpop,
+		       const MatrixXd Ysamp, const MatrixXd Ypop,
+		       const int pNoi, const int pSig) {
+    const int n(Xsamp.rows());
+    const int N(Xpop.rows());
+    // const int p(Xsamp.cols());
+    // const int m(Ysamp.cols());
+    MatrixXd R2s(pNoi+1, 2);
+    for(int j = 0; j < (pNoi + 1); ++j) {
+	R2s(j, 0) = R2pred(Xsamp.block(0, 0, n, pSig + j - 1),
+			   Ysamp,
+			   Xpop.block(0, 0, N, pSig + j - 1), 
+			   Ypop);
+	R2s(j, 1) = R2(Xsamp.block(0, 0, n, pSig + j - 1),
+		       Ysamp);
+    }
+    return R2s;
+}
