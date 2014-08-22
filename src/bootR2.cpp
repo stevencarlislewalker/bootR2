@@ -210,8 +210,6 @@ MatrixXd simExperiment(const MatrixXd Xsamp, const MatrixXd Xpop,
 		       const int pNoi, const int pSig) {
     const int n(Xsamp.rows());
     const int N(Xpop.rows());
-    // const int p(Xsamp.cols());
-    // const int m(Ysamp.cols());
     MatrixXd R2s(pNoi+1, 2);
     for(int j = 0; j < (pNoi + 1); ++j) {
 	R2s(j, 0) = R2pred(Xsamp.block(0, 0, n, pSig + j - 1),
@@ -222,4 +220,19 @@ MatrixXd simExperiment(const MatrixXd Xsamp, const MatrixXd Xpop,
 		       Ysamp);
     }
     return R2s;
+}
+
+
+// [[Rcpp::export]]
+MatrixXd hellinger(const MatrixXd X) {
+    MatrixXd Xsum = X.rowwise().sum();
+    int isNotZero = Xsum(0, 0) > 0;
+    MatrixXd Xhell(X);
+    for(int i = 0; i < X.rows(); ++i) {
+	isNotZero = Xsum(i, 0) > 0;
+	for(int j = 0; j < X.cols(); ++j) {	    
+	    Xhell(i, j) = isNotZero ? X(i, j)/Xsum(i, 0) : 0.0;
+	}
+    }
+    return Xhell.cwiseSqrt();
 }

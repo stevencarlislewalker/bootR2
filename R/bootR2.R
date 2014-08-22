@@ -58,3 +58,22 @@ bootR2.numeric <- function(object, X, nBoot = 1, predictive = TRUE, ...) {
     bootFunc <- ifelse(predictive, bootR2pred, bootR2samp)
     bootFunc(X, object, nBoot)
 }
+
+##' Adjusted R-square statistics
+##'
+##' Various adjustments to sample R-square statistics.  Currently only
+##' adjusted and generalised cross validation adjustments are
+##' available.  TODO:  add final prediction error
+##'
+##' @param R2 a vector of R-square statistics
+##' @param n length of the response
+##' @param p number of columns of the response matrix
+##' @return an adjusted version of \code{R2}
+##' @rdname adjusted
+##' @export
+adj <- function(R2, n, p) 1 - ((n - 1) / (n - p)) * (1 - R2)
+
+##' @rdname adjusted
+##' @export
+gcv <- function(R2, n, p) 1 - (n / (n - p)) * (1 - adj(R2, n, p))
+

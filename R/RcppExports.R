@@ -133,3 +133,12 @@ simExperiment <- function(Xsamp, Xpop, Ysamp, Ypop, pNoi, pSig) {
     .Call('bootR2_simExperiment', PACKAGE = 'bootR2',
           Xsamp, Xpop, Ysamp, Ypop, pNoi, pSig)
 }
+
+##' Hellinger transformation
+##'
+##' @param X A matrix
+##' @return \code{X} Hellinger-transformed
+##' @export
+hellinger <- function(X) {
+    .Call('bootR2_hellinger', PACKAGE = 'bootR2', X)
+}

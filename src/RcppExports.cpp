@@ -221,3 +221,18 @@ RcppExport SEXP bootR2_simExperiment(SEXP XXsamp, SEXP XXpop,
     return __sexp_result;
     END_RCPP
 }
+
+// hellinger
+MatrixXd hellinger(const MatrixXd X);
+RcppExport SEXP bootR2_hellinger(SEXP XX) {
+    BEGIN_RCPP
+	SEXP __sexp_result;
+    {
+	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
+	MatrixXd __result = hellinger(X);
+	PROTECT(__sexp_result = wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+    END_RCPP
+}
