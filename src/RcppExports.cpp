@@ -91,13 +91,14 @@ RcppExport SEXP bootR2_rUnif(SEXP nn) {
 
 
 // bootPerm
-IntegerVector bootPerm(int n);
-RcppExport SEXP bootR2_bootPerm(SEXP nn) {
+IntegerVector bootPerm(int n, int N);
+RcppExport SEXP bootR2_bootPerm(SEXP nn, SEXP NN) {
     BEGIN_RCPP
 	SEXP __sexp_result;
     {
 	Rcpp::traits::input_parameter< int >::type n(nn);
-	IntegerVector __result = bootPerm(n);
+	Rcpp::traits::input_parameter< int >::type N(NN);
+	IntegerVector __result = bootPerm(n, N);
 	PROTECT(__sexp_result = wrap(__result));
     }
     UNPROTECT(1);
@@ -223,12 +224,12 @@ RcppExport SEXP bootR2_simExperiment(SEXP XXsamp, SEXP XXpop,
 }
 
 // hellinger
-MatrixXd hellinger(const MatrixXd X);
+MatrixXd hellinger(MatrixXd X);
 RcppExport SEXP bootR2_hellinger(SEXP XX) {
     BEGIN_RCPP
 	SEXP __sexp_result;
     {
-	const Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
+	Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
 	MatrixXd __result = hellinger(X);
 	PROTECT(__sexp_result = wrap(__result));
     }
@@ -236,3 +237,29 @@ RcppExport SEXP bootR2_hellinger(SEXP XX) {
     return __sexp_result;
     END_RCPP
 }
+
+
+// iterSimExperiment
+MatrixXd iterSimExperiment(MatrixXd X, MatrixXd Y,
+			   const int pNoi, const int pSig, 
+			   const int nIter, const int n);
+RcppExport SEXP bootR2_iterSimExperiment(SEXP XX, SEXP YY,
+					 SEXP ppNoi, SEXP ppSig,
+					 SEXP nnIter, SEXP nn) {
+    BEGIN_RCPP
+	SEXP __sexp_result;
+    {
+	Map<MatrixXd> X(as<Map<MatrixXd> >(XX));
+	Map<MatrixXd> Y(as<Map<MatrixXd> >(YY));
+	Rcpp::traits::input_parameter< int >::type pNoi(ppNoi);
+	Rcpp::traits::input_parameter< int >::type pSig(ppSig);
+	Rcpp::traits::input_parameter< int >::type nIter(nnIter);
+	Rcpp::traits::input_parameter< int >::type n(nn);
+	MatrixXd __result = iterSimExperiment(X, Y, pNoi, pSig, nIter, n);
+	PROTECT(__sexp_result = wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+    END_RCPP
+}
+

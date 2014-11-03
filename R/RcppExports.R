@@ -17,6 +17,7 @@
 ##' @aliases betaHat
 ##' @export
 betaHat <- function(X, y) {
+    storage.mode(X) <- storage.mode(y) <- "double"
     .Call('bootR2_betaHat'   , PACKAGE = 'bootR2', X, y)
     ## if(is.matrix(y)) {
     ##     .Call('bootR2_betaHatMat', PACKAGE = 'bootR2', X, y)
@@ -29,6 +30,7 @@ betaHat <- function(X, y) {
 ##' @aliases R2
 ##' @export
 R2 <- function(X, y) {
+    storage.mode(X) <- storage.mode(y) <- "double"
     .Call('bootR2_R2', PACKAGE = 'bootR2', X, y)
 }
 
@@ -41,6 +43,8 @@ R2 <- function(X, y) {
 ##' @aliases R2pred
 ##' @export
 R2pred <- function(Xt, yt, Xv, yv) {
+    storage.mode(Xt) <- storage.mode(yt) <-
+        storage.mode(Xv) <- storage.mode(yv) <- "double"
     .Call('bootR2_R2pred', PACKAGE = 'bootR2', Xt, yt, Xv, yv)
 }
 
@@ -56,12 +60,13 @@ rUnif <- function(n) {
 ##' Random permutation
 ##'
 ##' @param n length of the permutation vector
+##' @param N total number of objects
 ##' @return a permutation of \code{1:n}
 ##' @rdname bootPerm
 ##' @aliases shuffleMatrix shuffleVector
 ##' @export
-bootPerm <- function(n) {
-    .Call('bootR2_bootPerm', PACKAGE = 'bootR2', n)
+bootPerm <- function(n, N) {
+    .Call('bootR2_bootPerm', PACKAGE = 'bootR2', n, N)
 }
 ##' @param X model matrix to be permuted
 ##' @param prm permutation of the observations (typically the output
@@ -69,12 +74,14 @@ bootPerm <- function(n) {
 ##' @rdname bootPerm
 ##' @export
 shuffleMatrix <- function(X, prm) {
+    storage.mode(X) <- "double"
     .Call('bootR2_shuffleMatrix', PACKAGE = 'bootR2', X, prm)
 }
 ##' @param y response vector to be permuted
 ##' @rdname bootPerm
 ##' @export
 shuffleVector <- function(y, prm) {
+    storage.mode(y) <- "double"
     .Call('bootR2_shuffleVector', PACKAGE = 'bootR2', y, prm)
 }
 
@@ -104,12 +111,36 @@ shuffleVector <- function(y, prm) {
 ##' @aliases bootR2pred bootR2samp
 ##' @export
 bootR2pred <- function(X, y, nBoot) {
+    storage.mode(X) <- storage.mode(y) <- "double"
     .Call('bootR2_bootR2pred', PACKAGE = 'bootR2', X, y, nBoot)
 }
 ##' @rdname bootR2
 ##' @export
 bootR2samp <- function(X, y, nBoot) {
+    storage.mode(X) <- storage.mode(y) <- "double"
     .Call('bootR2_bootR2', PACKAGE = 'bootR2', X, y, nBoot)
+}
+
+##' Predictive R-square simulations
+##'
+##' Calculate estimated and sample R-square statistics for each model
+##' with zero to \code{pNoi} predictors that are unrelated to the
+##' response
+##'
+##' @param X model matrix in a population (last \code{pNoi} columns
+##' should be unrelated to the model response)
+##' @param Y model response in a population
+##' @param pNoi number of predictors that are not related to the response
+##' @param pSig number of predictors that are related to the response
+##' @param nIter number of iterations
+##' @param n sample size
+##' @return Two column matrix with estimated R-squares in the first
+##' column and sample R-squares in the second
+##' @export
+iterSimExperiment <- function(X, Y, pNoi, pSig, nIter, n) {
+    storage.mode(X) <- storage.mode(Y) <- "double"
+    .Call('bootR2_iterSimExperiment', PACKAGE = 'bootR2',
+          as.double(X), as.double(Y), pNoi, pSig, nIter, n)
 }
 
 ##' Predictive R-square simulations
@@ -130,6 +161,8 @@ bootR2samp <- function(X, y, nBoot) {
 ##' column and sample R-squares in the second
 ##' @export
 simExperiment <- function(Xsamp, Xpop, Ysamp, Ypop, pNoi, pSig) {
+    storage.mode(Xsamp) <- storage.mode(Xpop) <-
+        storage.mode(Ypop) <- storage.mode(Ysamp) <- "double"
     .Call('bootR2_simExperiment', PACKAGE = 'bootR2',
           Xsamp, Xpop, Ysamp, Ypop, pNoi, pSig)
 }
@@ -140,5 +173,6 @@ simExperiment <- function(Xsamp, Xpop, Ysamp, Ypop, pNoi, pSig) {
 ##' @return \code{X} Hellinger-transformed
 ##' @export
 hellinger <- function(X) {
+    storage.mode(X) <- "double"
     .Call('bootR2_hellinger', PACKAGE = 'bootR2', X)
 }

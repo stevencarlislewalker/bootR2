@@ -8,7 +8,7 @@
 \usage{
 rUnif(n)
 
-bootPerm(n)
+bootPerm(n, N)
 
 shuffleMatrix(X, prm)
 
@@ -16,6 +16,8 @@ shuffleVector(y, prm)
 }
 \arguments{
 \item{n}{length of the permutation vector}
+
+\item{N}{total number of objects}
 
 \item{X}{model matrix to be permuted}
 
